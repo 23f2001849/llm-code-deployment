@@ -29,13 +29,21 @@ class Attachment(BaseModel):
     name: str
     url: str
 
+class Brief(BaseModel):
+    name: str
+    description: str
+
+class Attachment(BaseModel):
+    name: str
+    url: str
+
 class DeploymentRequest(BaseModel):
     email: str
     secret: str
     task: str
     round: int
     nonce: str
-    brief: str
+    brief: Brief  # ✅ Use the Brief model
     checks: List[str]
     evaluation_url: str
     attachments: List[Attachment] = []
