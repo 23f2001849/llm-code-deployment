@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  llm-deployment-api:
+    build: .
+    container_name: llm-code-deployment
+    ports:
+      - "7860:7860"
+    env_file:
+      - .env
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=7860
+      - DEBUG=true
+    volumes:
+      - ./logs:/app/logs
+      - ./attachments:/app/attachments
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7860/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - deployment-network
+
+networks:
+  deployment-network:
+    driver: bridge
